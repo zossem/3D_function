@@ -139,13 +139,12 @@
   <ItemGroup>
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUIMyFrame1.cpp" />
+    <ClCompile Include="PrepareData.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="vecmat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUIMyFrame1.h" />
-    <ClInclude Include="vecmat.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
