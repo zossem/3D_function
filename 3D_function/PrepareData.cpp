@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 float FunctionData[100][3];
 int   NoPoints;
 
