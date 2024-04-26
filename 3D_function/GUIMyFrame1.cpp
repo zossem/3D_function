@@ -1,7 +1,7 @@
 #include "GUIMyFrame1.h"
 #include <cstdlib>
 
-#define SIDE 200
+#define SIDE 40
 
 GUIMyFrame1::GUIMyFrame1( wxWindow* parent )
 :
@@ -78,12 +78,13 @@ void GUIMyFrame1::Repaint()
     int width = m_panel1->GetSize().GetWidth();
     int high = m_panel1->GetSize().GetHeight();
 
-    for (int i = 0; i < width / 2; i++)
+    for (int i = 0; i < SIDE*2 / 2; i++)
     {
-        for (int j = 0; j < high / 2; j++)
+        for (int j = 0; j < SIDE*2 / 2; j++)
         {
             wxColor color=PickColor(Data[i][j]);
-            VoxelSpace(i, j, Data[i][j], m_s_tilt->GetValue()/100.0, high / ((max_value - mini_value) * 5), color, dc);
+            //VoxelSpace(i, j, Data[i][j], m_s_tilt->GetValue()/100.0, high / ((max_value - mini_value) * 5), color, dc);
+            VoxelSpace(i, j, Data[i][j], m_s_tilt->GetValue() / 100.0, 200.0/max_value, color, dc);
         }
     }
 }
@@ -177,13 +178,16 @@ float GUIMyFrame1::Shepard(int number_of_poits, float d[][3], float x, float y)
 
 void GUIMyFrame1::VoxelSpace(int Xcor, int Ycor, float high, float horizon, int high_scale, wxColor color, wxBufferedDC& dc)
 {
+    Xcor *= 5;
+    Ycor *= 5;
     int panel_width = m_panel1->GetSize().GetWidth();
     int panel_high = m_panel1->GetSize().GetHeight();
     Ycor *= horizon;
-    Xcor += (panel_width - SIDE) / 2;
-    Ycor += (panel_high - SIDE) / 2;
-    dc.SetPen(wxPen(color));
+    Xcor += (panel_width - SIDE) / 4;
+    Ycor += (panel_high - SIDE) / 2.1;
+    dc.SetPen(wxPen(color, 7));
     dc.DrawLine(Xcor, Ycor, Xcor, Ycor - high * high_scale);
+
 }
 
 wxColor GUIMyFrame1::PickColor(float high)
