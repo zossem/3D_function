@@ -1,8 +1,4 @@
-#include <cstdlib>
-
-float FunctionData[100][3];
-int   NoPoints;
-
+/*
 void PrepareData(int fun)
 {
  int i;
@@ -59,4 +55,4 @@ void PrepareData(int fun)
             }
           break;
     }
-}
+}*/

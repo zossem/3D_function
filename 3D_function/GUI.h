@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 4.1.0-0-g733bf3d)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -48,6 +48,7 @@ class MyFrame1 : public wxFrame
 		wxSlider* m_s_tilt;
 
 		// Virtual event handlers, override them in your derived class
+		virtual void UpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void m_button1_click( wxCommandEvent& event ) { event.Skip(); }
 		virtual void m_button2_click( wxCommandEvent& event ) { event.Skip(); }
 		virtual void m_button3_click( wxCommandEvent& event ) { event.Skip(); }
