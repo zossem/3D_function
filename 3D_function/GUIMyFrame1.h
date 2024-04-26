@@ -40,7 +40,7 @@ class GUIMyFrame1 : public MyFrame1
 		float Data[500][500];
 		float mini_value;
 		float max_value;
-		void VoxelSpace(int Xcor, int Ycor, float high, float horizon, int high_scale, wxColor color, wxBufferedDC & dc);
+		void VoxelSpace(float Xcor, float Ycor, float high, float horizon, float high_scale, wxColor color, wxBufferedDC & dc);
 		wxColor PickColor(float high);
 		void PreperPoints();
 

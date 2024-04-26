@@ -84,7 +84,7 @@ void GUIMyFrame1::Repaint()
         {
             wxColor color=PickColor(Data[i][j]);
             //VoxelSpace(i, j, Data[i][j], m_s_tilt->GetValue()/100.0, high / ((max_value - mini_value) * 5), color, dc);
-            VoxelSpace(i, j, Data[i][j], m_s_tilt->GetValue() / 100.0, 200.0/max_value, color, dc);
+            VoxelSpace(i + (SIDE - j) / 2, j, Data[i][j], (m_s_tilt->GetValue() + 30.0) / 100.0, high / ((max_value - mini_value) * 5), color, dc);
         }
     }
 }
@@ -176,16 +176,22 @@ float GUIMyFrame1::Shepard(int number_of_poits, float d[][3], float x, float y)
     return numerator / denominator;
 }
 
-void GUIMyFrame1::VoxelSpace(int Xcor, int Ycor, float high, float horizon, int high_scale, wxColor color, wxBufferedDC& dc)
+void GUIMyFrame1::VoxelSpace(float Xcor, float Ycor, float high, float horizon, float high_scale, wxColor color, wxBufferedDC& dc)
 {
-    Xcor *= 5;
+    Xcor = Xcor * 5.0 / SIDE - 2.5;
+    Ycor = Ycor * 5.0 / SIDE - 2.5;
+    Xcor *= 7;
     Ycor *= 5;
+    Ycor *= horizon;
+    Xcor = (Xcor + 2.5)*SIDE/5.0;
+    Ycor = (Ycor + 2.5) * SIDE / 5.0;
+
     int panel_width = m_panel1->GetSize().GetWidth();
     int panel_high = m_panel1->GetSize().GetHeight();
-    Ycor *= horizon;
-    Xcor += (panel_width - SIDE) / 4;
-    Ycor += (panel_high - SIDE) / 2.1;
-    dc.SetPen(wxPen(color, 7));
+    
+    Xcor += (panel_width - SIDE) / 3;
+    Ycor += (panel_high - SIDE) / 1.5;
+    dc.SetPen(wxPen(color, 10));
     dc.DrawLine(Xcor, Ycor, Xcor, Ycor - high * high_scale);
 
 }
