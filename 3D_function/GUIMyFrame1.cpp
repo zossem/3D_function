@@ -1,7 +1,7 @@
 #include "GUIMyFrame1.h"
 #include <cstdlib>
 
-#define SIDE 40
+#define SIDE 60
 
 GUIMyFrame1::GUIMyFrame1( wxWindow* parent )
 :
@@ -9,6 +9,7 @@ MyFrame1( parent )
 {
 	bool IsColor = false;
 	function_number = 0;
+    PrepareData(function_number);
     PreperPoints();
 }
 
@@ -20,6 +21,7 @@ void GUIMyFrame1::UpdateUI( wxUpdateUIEvent& event )
 void GUIMyFrame1::m_button1_click( wxCommandEvent& event )
 {
 	function_number = 1;
+    PrepareData(function_number);
     PreperPoints();
 	Repaint();
 }
@@ -27,6 +29,7 @@ void GUIMyFrame1::m_button1_click( wxCommandEvent& event )
 void GUIMyFrame1::m_button2_click( wxCommandEvent& event )
 {
 	function_number = 2;
+    PrepareData(function_number);
     PreperPoints();
 	Repaint();
 }
@@ -34,6 +37,7 @@ void GUIMyFrame1::m_button2_click( wxCommandEvent& event )
 void GUIMyFrame1::m_button3_click( wxCommandEvent& event )
 {
 	function_number = 3;
+    PrepareData(function_number);
     PreperPoints();
 	Repaint();
 }
@@ -41,6 +45,7 @@ void GUIMyFrame1::m_button3_click( wxCommandEvent& event )
 void GUIMyFrame1::m_button4_click( wxCommandEvent& event )
 {
 	function_number = 4;
+    PrepareData(function_number);
     PreperPoints();
 	Repaint();
 }
@@ -60,12 +65,14 @@ void GUIMyFrame1::m_cb_color_click( wxCommandEvent& event )
 
 void GUIMyFrame1::m_s_rotation_onscroll( wxScrollEvent& event )
 {
-m_st_rotation->SetLabel(wxString::Format("Obrot: %d stopni.",m_s_rotation->GetValue()));
+    m_st_rotation->SetLabel(wxString::Format("Obrot: %d stopni.",m_s_rotation->GetValue()));
+    RotatePoints(m_s_rotation->GetValue());
+    Repaint();
 }
 
 void GUIMyFrame1::m_s_tilt_onscroll( wxScrollEvent& event )
 {
-// TODO: Implement m_s_tilt_onscroll
+    Repaint();
 }
 
 void GUIMyFrame1::Repaint()
@@ -84,7 +91,7 @@ void GUIMyFrame1::Repaint()
         {
             wxColor color=PickColor(Data[i][j]);
             //VoxelSpace(i, j, Data[i][j], m_s_tilt->GetValue()/100.0, high / ((max_value - mini_value) * 5), color, dc);
-            VoxelSpace(i + (SIDE - j) / 2, j, Data[i][j], (m_s_tilt->GetValue() + 30.0) / 100.0, high / ((max_value - mini_value) * 5), color, dc);
+            VoxelSpace(i + (SIDE - j) / 3.0, j, Data[i][j], (m_s_tilt->GetValue() + 30.0) / 100.0, high / ((max_value - mini_value) * 5), color, dc);
         }
     }
 }
@@ -152,8 +159,17 @@ float GUIMyFrame1::Shepard(int number_of_poits, float d[][3], float x, float y)
 {
     float denominator = 0, numerator = 0;
 
-    x = x * 5.0 / SIDE - 2.5;
-    y = y * 5.0 / SIDE - 2.5;
+    if (function_number == 4)
+    {
+        x = x * 3.0 / SIDE - 1.5;
+        y = y * 3.0 / SIDE - 1.5;
+    }
+    else
+    {
+        x = x * 5.0 / SIDE - 2.5;
+        y = y * 5.0 / SIDE - 2.5;
+    }
+    
 
     for (size_t i = 0; i < number_of_poits; i++)
     {
@@ -178,20 +194,39 @@ float GUIMyFrame1::Shepard(int number_of_poits, float d[][3], float x, float y)
 
 void GUIMyFrame1::VoxelSpace(float Xcor, float Ycor, float high, float horizon, float high_scale, wxColor color, wxBufferedDC& dc)
 {
-    Xcor = Xcor * 5.0 / SIDE - 2.5;
-    Ycor = Ycor * 5.0 / SIDE - 2.5;
-    Xcor *= 7;
+    if (function_number == 4)
+    {
+        Xcor = Xcor * 3.0 / SIDE - 1.5;
+        Ycor = Ycor * 3.0 / SIDE - 1.5;
+    }
+    else
+    {
+        Xcor = Xcor * 5.0 / SIDE - 2.5;
+        Ycor = Ycor * 5.0 / SIDE - 2.5;
+    }
+
+    Xcor *= 6;
     Ycor *= 5;
     Ycor *= horizon;
-    Xcor = (Xcor + 2.5)*SIDE/5.0;
-    Ycor = (Ycor + 2.5) * SIDE / 5.0;
+
+    if (function_number == 4)
+    {
+        Xcor = (Xcor + 1.5) * SIDE / 3.0;
+        Ycor = (Ycor + 1.5) * SIDE / 3.0;
+    }
+    else
+    {
+        Xcor = (Xcor + 2.5) * SIDE / 5.0;
+        Ycor = (Ycor + 2.5) * SIDE / 5.0;
+    }
+    
 
     int panel_width = m_panel1->GetSize().GetWidth();
     int panel_high = m_panel1->GetSize().GetHeight();
     
-    Xcor += (panel_width - SIDE) / 3;
-    Ycor += (panel_high - SIDE) / 1.5;
-    dc.SetPen(wxPen(color, 10));
+    Xcor += (panel_width - SIDE) / 2.7;
+    Ycor += (panel_high - SIDE) / 1.65;
+    dc.SetPen(wxPen(color, 9));
     dc.DrawLine(Xcor, Ycor, Xcor, Ycor - high * high_scale);
 
 }
@@ -211,9 +246,6 @@ wxColor GUIMyFrame1::PickColor(float high)
 
 void GUIMyFrame1::PreperPoints()
 {
-    PrepareData(function_number);
-    
-
     mini_value = 1000;
     max_value = -1000;
 
@@ -239,4 +271,19 @@ void GUIMyFrame1::PreperPoints()
     }
     max_value -= mini_value;
     mini_value = 0;
+}
+
+void GUIMyFrame1::RotatePoints(double alfa)
+{
+    PrepareData(function_number);
+    alfa = (alfa / 180.0) * M_PI;
+    for (int i = 0; i < NoPoints; i++)
+    {
+        float Xcor = FunctionData[i][0] * cos(alfa) - FunctionData[i][1] * sin(alfa);
+        float Ycor = FunctionData[i][0] * sin(alfa) + FunctionData[i][1] * cos(alfa);
+        
+        FunctionData[i][0] = Xcor;
+        FunctionData[i][1] = Ycor;
+    }
+    PreperPoints();
 }

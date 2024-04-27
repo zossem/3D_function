@@ -43,13 +43,7 @@ class GUIMyFrame1 : public MyFrame1
 		void VoxelSpace(float Xcor, float Ycor, float high, float horizon, float high_scale, wxColor color, wxBufferedDC & dc);
 		wxColor PickColor(float high);
 		void PreperPoints();
-
-
-
-
-
-
-
+		void RotatePoints(double alfa);
 };
 
 #endif // __GUIMyFrame1__
