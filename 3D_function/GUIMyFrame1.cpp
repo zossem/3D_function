@@ -85,9 +85,9 @@ void GUIMyFrame1::Repaint()
     int width = m_panel1->GetSize().GetWidth();
     int high = m_panel1->GetSize().GetHeight();
 
-    for (int i = 0; i < SIDE*2 / 2; i++)
+    for (int i = 0; i < SIDE; i++)
     {
-        for (int j = 0; j < SIDE*2 / 2; j++)
+        for (int j = 0; j < SIDE; j++)
         {
             wxColor color=PickColor(Data[i][j]);
             //VoxelSpace(i, j, Data[i][j], m_s_tilt->GetValue()/100.0, high / ((max_value - mini_value) * 5), color, dc);
